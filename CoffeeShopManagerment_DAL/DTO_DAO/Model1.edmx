@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="coffeemanagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="dateTable">
+          <Key>
+            <PropertyRef Name="dateID" />
+          </Key>
+          <Property Name="dateID" Type="date" Nullable="false" />
+          <Property Name="dayNumber" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="DayOfWeekNumber" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="monthNumber" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="MonthNames" Type="nvarchar" MaxLength="30" StoreGeneratedPattern="Computed" />
+          <Property Name="weekNumber" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="yearNumber" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="scheduleID" />
+          </Key>
+          <Property Name="scheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dateID" Type="date" Nullable="false" />
+          <Property Name="staffID" Type="int" Nullable="false" />
+          <Property Name="hoursPerShifts" Type="float" />
+          <Property Name="shifts" Type="char" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="staffName" Type="nvarchar" MaxLength="30" />
+          <Property Name="gender" Type="nvarchar" MaxLength="30" />
+          <Property Name="birthday" Type="date" />
+          <Property Name="position" Type="char" MaxLength="30" />
+          <Property Name="hoursofMonth" Type="float" />
+          <Property Name="coefficientPay" Type="int" />
+          <Property Name="numberphone" Type="char" MaxLength="20" />
+        </EntityType>
+        <Association Name="fk_Schedule_dateTable">
+          <End Role="dateTable" Type="Self.dateTable" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dateTable">
+              <PropertyRef Name="dateID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="dateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Schedule_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="coffeemanagerDBModelStoreContainer">
+          <EntitySet Name="dateTable" EntityType="Self.dateTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_Schedule_dateTable" Association="Self.fk_Schedule_dateTable">
+            <End Role="dateTable" EntitySet="dateTable" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Schedule_Staff" Association="Self.fk_Schedule_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="coffeemanagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="coffeemanagerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="dateTables" EntityType="coffeemanagerDBModel.dateTable" />
+          <EntitySet Name="Staffs" EntityType="coffeemanagerDBModel.Staff" />
+          <EntitySet Name="Schedules" EntityType="coffeemanagerDBModel.Schedule" />
+          <AssociationSet Name="fk_Schedule_dateTable" Association="coffeemanagerDBModel.fk_Schedule_dateTable">
+            <End Role="dateTable" EntitySet="dateTables" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Schedule_Staff" Association="coffeemanagerDBModel.fk_Schedule_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="dateTable">
+          <Key>
+            <PropertyRef Name="dateID" />
+          </Key>
+          <Property Name="dateID" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="dayNumber" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DayOfWeekNumber" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="monthNumber" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="MonthNames" Type="String" MaxLength="30" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="weekNumber" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="yearNumber" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Schedules" Relationship="coffeemanagerDBModel.fk_Schedule_dateTable" FromRole="dateTable" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="staffName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="gender" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="birthday" Type="DateTime" Precision="0" />
+          <Property Name="position" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
+          <Property Name="hoursofMonth" Type="Double" />
+          <Property Name="coefficientPay" Type="Int32" />
+          <Property Name="numberphone" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Schedules" Relationship="coffeemanagerDBModel.fk_Schedule_Staff" FromRole="Staff" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="scheduleID" />
+          </Key>
+          <Property Name="scheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateID" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="staffID" Type="Int32" Nullable="false" />
+          <Property Name="shifts" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="dateTable" Relationship="coffeemanagerDBModel.fk_Schedule_dateTable" FromRole="Schedule" ToRole="dateTable" />
+          <NavigationProperty Name="Staff" Relationship="coffeemanagerDBModel.fk_Schedule_Staff" FromRole="Schedule" ToRole="Staff" />
+          <Property Name="hoursPerShifts" Type="Double" />
+        </EntityType>
+        <Association Name="fk_Schedule_dateTable">
+          <End Type="coffeemanagerDBModel.dateTable" Role="dateTable" Multiplicity="1" />
+          <End Type="coffeemanagerDBModel.Schedule" Role="Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dateTable">
+              <PropertyRef Name="dateID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="dateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Schedule_Staff">
+          <End Type="coffeemanagerDBModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="coffeemanagerDBModel.Schedule" Role="Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="coffeemanagerDBModelStoreContainer" CdmEntityContainer="coffeemanagerDBEntities">
+          <EntitySetMapping Name="dateTables">
+            <EntityTypeMapping TypeName="coffeemanagerDBModel.dateTable">
+              <MappingFragment StoreEntitySet="dateTable">
+                <ScalarProperty Name="yearNumber" ColumnName="yearNumber" />
+                <ScalarProperty Name="weekNumber" ColumnName="weekNumber" />
+                <ScalarProperty Name="MonthNames" ColumnName="MonthNames" />
+                <ScalarProperty Name="monthNumber" ColumnName="monthNumber" />
+                <ScalarProperty Name="DayOfWeekNumber" ColumnName="DayOfWeekNumber" />
+                <ScalarProperty Name="dayNumber" ColumnName="dayNumber" />
+                <ScalarProperty Name="dateID" ColumnName="dateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="coffeemanagerDBModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="numberphone" ColumnName="numberphone" />
+                <ScalarProperty Name="coefficientPay" ColumnName="coefficientPay" />
+                <ScalarProperty Name="hoursofMonth" ColumnName="hoursofMonth" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="staffName" ColumnName="staffName" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="coffeemanagerDBModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="hoursPerShifts" ColumnName="hoursPerShifts" />
+                <ScalarProperty Name="shifts" ColumnName="shifts" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="dateID" ColumnName="dateID" />
+                <ScalarProperty Name="scheduleID" ColumnName="scheduleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
